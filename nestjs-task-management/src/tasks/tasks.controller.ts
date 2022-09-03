@@ -20,6 +20,11 @@ import { Task } from './dto/task.entity';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @Get()
+  async getTasks(@Query() filterDto: GetTasksFilgerDto): Promise<Task[]> {
+    return this.tasksService.getTasks(filterDto);
+  }
+  
   @Get('/:id')
   async getTaskById(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTaskById(id);
@@ -30,6 +35,19 @@ export class TasksController {
     return this.tasksService.creatTask(createTaskDto);
   }
 
+  @Delete('/:id')
+  async deleteTask(@Param('id') id: string): Promise<void> {
+    return this.tasksService.deleteTask(id);//ここreturnがないとdeleteTaskの例外がハンドルされずにアプリがクラッシュする。
+  }
+
+  @Patch('/:id/status')
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body() updateTaskStatusDto: updateTaskStatusDto,
+  ): Promise<Task> {
+    const { status } = updateTaskStatusDto;
+    return this.tasksService.updateTaskStatus(id, status);
+  }
   /*
   @Get()
   getTasks(@Query() filterDto: GetTasksFilgerDto): Task[] {
