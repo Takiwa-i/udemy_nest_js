@@ -18,6 +18,6 @@ export class Task {
   status: TaskStatus;
 
   @ManyToOne(_type => User, user => user.tasks, { eager: false })
-  @Exclude({ toPlainOnly: true }) //responseでuserの情報がそのままは見えないようにする
+  @Exclude({ toPlainOnly: true }) //これとintercepterでresponseでuserの情報がそのままは見えないようにする
   user:User;
 }
